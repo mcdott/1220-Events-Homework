@@ -18,9 +18,10 @@ main = Blueprint('main', __name__)
 def index():
     """Show upcoming events to users!"""
 
-    # TODO: Get all events and send to the template
+    # Get all events and send to the template
+    events = Event.query.all()
     
-    return render_template('index.html')
+    return render_template('index.html', events=events)
 
 
 @main.route('/create', methods=['GET', 'POST'])
@@ -40,8 +41,12 @@ def create():
             return render_template('create.html', 
                 error='Incorrect datetime format! Please try again.')
 
-        # TODO: Create a new event with the given title, description, & 
-        # datetime, then add and commit to the database
+        # Creates a new event with the given title, description, & 
+        # datetime, then adds and commits it to the database
+        event = Event(title=new_event_title, description=new_event_description, date_time=date_and_time)
+        db.session.add(event)
+        db.session.commit()
+
 
         flash('Event created.')
         return redirect(url_for('main.index'))
