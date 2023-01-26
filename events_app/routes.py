@@ -61,8 +61,9 @@ def event_detail(event_id):
 
     # Gets the event with the given id and sends it to the template
     event = Event.query.filter_by(id=event_id).first()
+    guest_count = Guest.query.count()
 
-    return render_template('event_detail.html', event=event)
+    return render_template('event_detail.html', event=event, guest_count=guest_count)
 
 
 @main.route('/event/<event_id>', methods=['POST'])

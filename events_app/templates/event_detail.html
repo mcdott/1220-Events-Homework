@@ -13,11 +13,10 @@
 
 <p>{{ event.description }}</p>
 
-<p><strong>Date:</strong> {{ event.date }}</p>
-<p><strong>Time:</strong> {{ event.time }}</p>
+<p><strong>Date:</strong> {{ event.date_and_time.strftime('%Y-%m-%d') }}</p>
+<p><strong>Time:</strong> {{ event.date_and_time.strftime('%H:%M') }}</p>
 
-<p><strong>Number of Guests:</strong> {{ event.num_guests }}</p>
-
+<p><strong>Number of Guests:</strong> {{ guest_count }}</p>
 <form method="POST">
     <fieldset>
         <legend>RSVP</legend>
