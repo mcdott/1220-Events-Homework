@@ -68,25 +68,36 @@ def event_detail(event_id):
 @main.route('/event/<event_id>', methods=['POST'])
 def rsvp(event_id):
     """RSVP to an event."""
-    # TODO: Get the event with the given id from the database
+    # Gets the event with the given id from the database
+    event = Event.query.filter_by(id=event_id).first()
+
     is_returning_guest = request.form.get('returning')
     guest_name = request.form.get('guest_name')
 
     if is_returning_guest:
-        # TODO: Look up the guest by name. If the guest doesn't exist in the 
-        # database, render the event_detail.html template, and pass in an error
+        # Looks up the guest by name. If the guest doesn't exist in the 
+        # database, renders the event_detail.html template, passing in an error
         # message as `error`.
+        guest = Guest.query.filter_by(name=guest_name).first()
+        if not guest:
+            return render_template('event_detail.html', error='Guest not found.')
 
-        # TODO: If the guest does exist, add the event to their 
-        # events_attending, then commit to the database.
-        pass
+        # If the guest does exist, adds the event to their 
+        # events_attending, then commits to the database.
+        guest.events_attending.append(event)
+        db.session.commit()
+
     else:
         guest_email = request.form.get('email')
         guest_phone = request.form.get('phone')
 
-        # TODO: Create a new guest with the given name, email, and phone, and 
-        # add the event to their events_attending, then commit to the database.
-        pass
+        # Creates a new guest with the given name, email, and phone, and 
+        # adds the event to their events_attending, then commit to the database.
+        new_guest = Guest(name=guest_name, email=guest_email, phone=guest_phone)
+        new_guest.events_attending.append(event)
+        db.session.add(new_guest)
+        db.session.commit()
+
     
     flash('You have successfully RSVP\'d! See you there!')
     return redirect(url_for('main.event_detail', event_id=event_id))
