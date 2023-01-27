@@ -18,7 +18,7 @@
 
 <ul>
     {% for event in guest.events_attending %}
-    <li><a href="/event/{{ event.id }}">{{ event.name }}</a></li>
+    <li><a href="/event/{{ event.id }}">{{ event.title }}</a></li>
     {% endfor %}
 </ul>
 

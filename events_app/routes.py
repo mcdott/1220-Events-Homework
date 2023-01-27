@@ -107,5 +107,5 @@ def rsvp(event_id):
 @main.route('/guest/<guest_id>')
 def guest_detail(guest_id):
     # Gets the guest with the given id and sends it to the template
-    guest = Guest.query.filterby(id=guest_id).first()
+    guest = Guest.query.filter_by(id=guest_id).first()
     return render_template('guest_detail.html', guest=guest)
